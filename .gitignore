@@ -162,4 +162,4 @@ cython_debug/
 #.idea/
 
 # 動画ファイルを格納しているディレクトリ
-data/Movie/*
+data/*
