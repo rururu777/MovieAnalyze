@@ -36,3 +36,22 @@ def ExtractToFrame(movie_path, sec_time):
     # リソースの解放
     capture.release()
     cv2.destroyAllWindows()
+
+def ExtractFramesFromMultipleVideos(sec_times):
+    import os
+
+    # 動画が保存されいてるディレクトリのパス
+    directory = "../data/Movie"
+    # ディレクトリ内の動画ファイルを取得
+    video_files = [f for f in os.listdir(directory) if f.endswith(".MP4")]
+    # 引数の秒数リストと動画ファイルの数が一致しているかを確認
+    if len(video_files) != len(sec_times):
+        print("動画の数と秒数のリストの要素数が一致していません")
+        print(f"動画の数：{len(video_files)}、秒数のリスト：{len(sec_times)}")
+        return
+    
+    # 各動画に対してフレームを抽出
+    for video_file, sec_time in zip(video_files, sec_times):
+        video_path = os.path.join(directory, video_file)
+        print(f"{video_file} から {sec_time} 秒目のフレームを抽出します。")
+        ExtractToFrame(video_path, sec_time)
