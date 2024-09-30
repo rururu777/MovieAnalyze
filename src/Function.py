@@ -67,7 +67,7 @@ def PrepareData():
     # 画像とラベルのリスト
     image_dir = '../data/Movie'
     labels = [18.0, 17.5, 20.0, 19.0]  # 計測したスランプ値(cm)のリスト
-    image_size = (224, 224)  # 画像サイズ（モデルによって異なる）
+    input_shape = (256, 256, 3)  # 縦横256pxのカラー画像を入力形式として定義
 
     # 画像を読み込み、配列に変換
     images = []
@@ -80,7 +80,7 @@ def PrepareData():
                 for filename in sorted(os.listdir(sub_dir_path)):
                     if filename.endswith(".jpg"):
                         img_path = os.path.join(sub_dir_path, filename)
-                        img = load_img(img_path, target_size=image_size)
+                        img = load_img(img_path, target_size=input_shape)
                         img_array = img_to_array(img)
                         images.append(img_array)
         
