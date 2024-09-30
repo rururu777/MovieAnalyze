@@ -45,7 +45,7 @@ def ExtractFramesFromMultipleVideos(sec_ranges):
         # 動画が保存されいてるディレクトリのパス
         directory = "../data/Movie"
         # ディレクトリ内の動画ファイルを取得
-        video_files = [f for f in os.listdir(directory) if f.endswith(".MP4")]
+        video_files = sorted([f for f in os.listdir(directory) if f.endswith(".MP4")])
         # 引数の秒数リストと動画ファイルの数が一致しているかを確認
         if len(video_files) != len(sec_ranges):
             print("動画の数と秒数のリストの要素数が一致していません")
@@ -56,6 +56,7 @@ def ExtractFramesFromMultipleVideos(sec_ranges):
         for video_file, (start_time, end_time) in zip(video_files, sec_ranges):
             video_path = os.path.join(directory, video_file)
             ExtractToFrame(video_path, start_time, end_time)
+            
     except Exception as e:
         print(f"ExtractFramesFromMultipleVideos関数でエラーが発生しました：{e}")
 
@@ -67,7 +68,7 @@ def PrepareData():
     # 画像とラベルのリスト
     image_dir = '../data/Movie'
     labels = [18.0, 17.5, 20.0, 19.0]  # 計測したスランプ値(cm)のリスト
-    input_shape = (256, 256, 3)  # 縦横256pxのカラー画像を入力形式として定義
+    input_shape = [256, 256, 3]  # 縦横256pxのカラー画像を入力形式として定義
 
     # 画像を読み込み、配列に変換
     images = []
