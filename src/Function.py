@@ -91,3 +91,24 @@ def PrepareData():
 
     except Exception as e:
         print(f"PrepareData()関数でエラーが発生しました：{e}")
+
+def LoadToModel(model_dir):
+    from tensorflow.keras.models import model_from_json
+    from tensorflow.keras import optimizers
+    import os
+
+    try:
+        model_path = os.path.join(model_dir, "model.json")
+        param_path = os.path.join(model_dir, "weight.weights.h5")
+        # モデルの読み込み
+        model = model_from_json(open(model_path, "r").read())
+        # 重みの読み込み
+        model.load_weights(param_path)
+        # Sequentialオブジェクトのコンパイル
+        model.compile(loss="binary_crossentropy",
+                        optimizer=optimizers.Adam(0.001), metrics=["accuracy"])
+        
+        return model
+    
+    except Exception as e:
+        print(f"LoadToModel()関数でエラーが発生しました：{e}")
