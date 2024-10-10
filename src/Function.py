@@ -112,3 +112,44 @@ def LoadToModel(model_dir):
     
     except Exception as e:
         print(f"LoadToModel()関数でエラーが発生しました：{e}")
+    
+def ResultToPredict(target_dir, model):
+    from tensorflow.keras.preprocessing.image import load_img, img_to_array
+    import numpy as np
+    import os
+
+    try:
+        # 入力データの形状
+        input_shape = [256, 256, 3]
+        # 画像データの数値データを格納する配列
+        target_array = []
+
+        # ディレクトリ内のjpgファイルを読み込む
+        for filename in sorted(os.listdir(target_dir)):
+            if filename.endswith(".jpg"):
+                img_path = os.path.join(target_dir, filename)
+                img = load_img(img_path, target_size=input_shape)
+                img_array = img_to_array(img) 
+                img_array = np.expand_dims(img_array, axis=0)
+                img_array /= 255.0
+                target_array.append(img_array)
+
+        target_array = np.array(target_array, dtype="float32")
+
+        # カウンタ
+        cnt_True = 0
+        cnt_False = 0
+
+        # 対象ディレクトリの画像全てを予測
+        for i in range(len(target_array)):
+            prediction = model.predict(target_array[i])
+            if(prediction[0][0] > 0.5):
+                cnt_True += 1
+            else:
+                cnt_False += 1
+
+        # 予測結果の出力
+        print(f"True：{cnt_True}")
+        print(f"False：{cnt_False}")
+    except Exception as e:
+        print(f"ResultToPredict()関数でエラーが発生しました：{e}")
